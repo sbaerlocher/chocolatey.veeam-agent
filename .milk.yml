@@ -1,0 +1,45 @@
+---
+# chocomilk vars
+
+# Package Changelog
+changelog: 'https://forums.veeam.com/veeam-agent-for-windows-f33/current-version-t29537.html'
+
+# Regex for Version
+version: "{{ register_changelog.content |
+  regex_search('.*Latest version:.*') |
+  regex_search('\\bv?[0-9]+\\.[0-9]+\\.[0-9]+(?:\\.[0-9]+)(?:\\.[0-9]+)?\\b')
+  }}"
+
+# Download URL
+url: 'https://download5.veeam.com/VeeamAgentWindows_{{ version }}_.zip'
+# url64:
+
+searchreplace:
+  'tools/chocolateyinstall.ps1':
+    - regwxp: (^\s*[$]*url\s*=\s*)('.*')
+      replace: '$url = "{{ url }}"'
+    - regwxp: (^\s*[$]*checksumZip\s*=\s*)('.*')
+      replace: '$checksumZip = "{{ file_hash }}"'
+
+# readme to description
+readme:
+  start: 5
+  end: 13
+
+# deploy
+deploy:
+  - provider: chocolatey
+    repository: 'https://nuget.itigo.tech/upload'
+    key: "{{ lookup('env','CHOCOLATEY_ITIGO_API_KEY') }}"
+  - provider: github
+    name: 'avarins@sbaerlo.ch'
+    email: 'avarins'
+    url: github.com/sbaerlocher/chocolatey.veeam-agent.git
+    key: "{{ lookup('env','GITHUB_API_KEY') }}"
+
+# Notification
+notifications:
+  - provider: mattermost
+    url: 'https://matters.itigo.tech'
+    key: "{{ lookup('env','MATTERMOST_API_KEY') }}"
+    channel: 'software-packages'
