@@ -6,7 +6,7 @@ changelog: 'https://forums.veeam.com/veeam-agent-for-windows-f33/current-version
 
 # Regex for Version
 version: "{{ register_changelog.content |
-  regex_search('.*Latest version:.*') |
+  regex_search('.*GA version:.*') |
   regex_search('\\bv?[0-9]+\\.[0-9]+\\.[0-9]+(?:\\.[0-9]+)(?:\\.[0-9]+)?\\b')
   }}"
 
