@@ -2,16 +2,13 @@
 # chocomilk vars
 
 # Package Changelog
-changelog: 'https://forums.veeam.com/veeam-agent-for-windows-f33/current-version-t29537.html'
+changelog: 'https://release-monitoring.org/api/v2/projects/?name=Veeam%20Agent'
 
 # Regex for Version
-version: "{{ register_changelog.content |
-  regex_search('.*GA version:.*') |
-  regex_search('\\bv?[0-9]+\\.[0-9]+\\.[0-9]+(?:\\.[0-9]+)(?:\\.[0-9]+)?\\b')
-  }}"
+version: "{{ register_changelog.json['items'][0]['version'] }}"
 
 # Download URL
-url: 'https://download5.veeam.com/VeeamAgentWindows_{{ version }}_.zip'
+url: 'https://download5.veeam.com/VeeamAgentWindows_{{ version }}.zip'
 # url64:
 
 searchreplace:
