@@ -14,7 +14,7 @@ url: 'https://download5.veeam.com/VeeamAgentWindows_{{ version }}.zip'
 searchreplace:
   'tools/chocolateyinstall.ps1':
     - regwxp: (^\s*[$]*url\s*=\s*)(".*")
-      replace: '$ur = "{{ url }}"'
+      replace: '$url = "{{ url }}"'
     - regwxp: (^\s*[$]*checksumZip\s*=\s*)(".*")
       replace: '$checksumZip = "{{ file_hash }}"'
 

@@ -2,18 +2,18 @@
 $PackageParameters = Get-PackageParameters
 
 $toolsDir = "$(Split-Path -Parent $MyInvocation.MyCommand.Definition)"
-$ur = "https://download5.veeam.com/VeeamAgentWindows_4.0.0.1811.zip"
+$url = "https://download5.veeam.com/VeeamAgentWindows_4.0.0.1811.zip"
 $checksumZip = "a2ea8c3b12f1dd7509985f46952cf63a72b9fdcf79ccf4644e836e789d78d09167a5871ba598b62194f4067e25c0bd9eee1641fe9453f03d35786935995b53bb"
-$checksumTypeZip     = 'SHA512'
+$checksumTypeZip = 'SHA512'
 
 Import-Module -Name "$($toolsDir)\helpers.ps1"
 
 $zipArgs = @{
-	packageName    = $env:ChocolateyPackageName
-	url            = $url
-	unzipLocation  = $ENV:TMP
-	checksum       = $checksumZip
-	checksumType   = $checksumTypeZip
+	packageName   = $env:ChocolateyPackageName
+	url           = $url
+	unzipLocation = $ENV:TMP
+	checksum      = $checksumZip
+	checksumType  = $checksumTypeZip
 }
 
 $packageArgs = @{
@@ -32,14 +32,15 @@ if ($PackageParameters.NoAutostartHard) {
 	Update-RegistryValue `
 		-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" `
 		-Name "Veeam.EndPoint.Tray.exe" `
-        -Type Binary `
+		-Type Binary `
 		-Value ([byte[]](0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)) `
 		-Message "Disable Veeam Agent Autostart"
-} else {
+}
+else {
 	Update-RegistryValue `
-        -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" `
-        -Name "Veeam.EndPoint.Tray.exe" `
-        -Type Binary `
+		-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" `
+		-Name "Veeam.EndPoint.Tray.exe" `
+		-Type Binary `
 		-Value ([byte[]](0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)) `
 		-Message "Default Veeam Agent Autostart"
 }
